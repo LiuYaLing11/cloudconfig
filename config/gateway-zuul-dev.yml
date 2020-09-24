@@ -1,0 +1,29 @@
+test: '{cipher}055195a4f931984d1a2a50ce8c57e96631fe4053dd7673e782e526c5dc86a110'
+server:
+  port: 9001
+
+spring:
+  application:
+    name: gateway-zuul  #\u670D\u52A1\u5460D
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6001/eureka
+
+zuul:
+  routes:
+    USERS-PROVIDER: /provider/*
+    USERS-CONSUMER: /consumer/*
+  prefix: /gateway                       #\u524D\u7F00
+  ignored-services: '*'                  #\u7981\u7528\u670D\u52A1\u540D\u8BBF\u95EE(\u5185\u7F51\u4E0D\u53D7\u8BE5\u9650\u5236)
+  ignored-patterns: /**/map/**           #\u7981\u7528\u67D0\u4E9B\u8DEF\u5F84
+  #sensitive-headers: '*'                 #\u89E3\u51B3\u8D70\u7F51\u5173session\u53D8\u5316
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000   				#\u5355\u673Afalse,\u9ED8\u8BA4true
